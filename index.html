@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Generation Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      line-height: 1.7;
+    }
+
+    /* ── Header ─────────────────────────────────────────────── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 48px 24px 36px;
+      text-align: center;
+    }
+    header .venue {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #426AA0;
+      margin-bottom: 14px;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      max-width: 820px;
+      margin: 0 auto 20px;
+      line-height: 1.35;
+    }
+    header .authors {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    header .links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    header .links a {
+      display: inline-block;
+      padding: 7px 18px;
+      border: 1.5px solid #426AA0;
+      border-radius: 20px;
+      color: #426AA0;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    header .links a:hover {
+      background: #426AA0;
+      color: #fff;
+    }
+
+    /* ── Sections ────────────────────────────────────────────── */
+    .section {
+      max-width: 900px;
+      margin: 48px auto;
+      padding: 0 24px;
+    }
+    .section h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #426AA0;
+    }
+    .abstract-box {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 28px 32px;
+      font-size: 0.97rem;
+      color: #444;
+      line-height: 1.8;
+    }
+
+    /* ── Tab navigation ──────────────────────────────────────── */
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border: 1.5px solid #426AA0;
+      border-radius: 20px;
+      background: #fff;
+      color: #426AA0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: #426AA0;
+      color: #fff;
+    }
+
+    /* ── Demo panel / card ───────────────────────────────────── */
+    .demo-panel { display: none; }
+    .demo-panel.active { display: block; }
+
+    .demo-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .demo-card-header {
+      background: #f0f4fa;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 14px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    .demo-card-body {
+      padding: 24px;
+    }
+    .demo-card video {
+      width: 100%;
+      border-radius: 6px;
+      background: #000;
+      display: block;
+      max-height: 480px;
+    }
+    .demo-comment {
+      margin-top: 18px;
+      font-size: 0.93rem;
+      color: #555;
+      line-height: 1.75;
+    }
+    .demo-comment strong { color: #2c3e50; }
+
+    /* ── Scores block ────────────────────────────────────────── */
+    .scores-block {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px dashed #e0e0e0;
+      flex-wrap: wrap;
+    }
+    .score-item { flex: 1; min-width: 160px; }
+    .score-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: default;
+    }
+    .score-desc {
+      font-size: 0.76rem;
+      color: #aaa;
+      font-weight: 400;
+      margin-bottom: 6px;
+      font-style: italic;
+    }
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .score-bar-wrap {
+      flex: 1;
+      height: 7px;
+      background: #e8edf4;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #426AA0, #6b9fd4);
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+    .score-value {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #2c3e50;
+      min-width: 34px;
+      text-align: right;
+    }
+
+    /* ── Info tooltip ────────────────────────────────────────── */
+    .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #c8d8ee;
+      color: #426AA0;
+      font-size: 0.65rem;
+      font-style: normal;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+      cursor: help;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .info-icon::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2c3e50;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1.5;
+      padding: 10px 14px;
+      border-radius: 6px;
+      width: 260px;
+      white-space: normal;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 10;
+      text-transform: none;
+      letter-spacing: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .info-icon:hover::after { opacity: 1; }
+
+    /* Right-side tooltip: anchor to the right so it doesn't overflow the viewport */
+    .score-item:last-child .info-icon::after {
+      left: auto;
+      right: 0;
+      transform: none;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.82rem;
+      color: #999;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 48px;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.4rem; }
+      .abstract-box { padding: 20px; }
+      .demo-card-body { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════ -->
+<header>
+  <div class="venue">JNMR 2026</div>
+  <h1>Title</h1>
+  <div class="authors"> </div>
+  <div class="links">
+    <a href="#">Paper (PDF)</a>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ABSTRACT
+═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>Abstract</h2>
+  <div class="abstract-box">
+    <p>
+      <!-- REPLACE THIS WITH YOUR ACTUAL ABSTRACT -->
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum.
+    </p>
+    <br />
+    <p>
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis
+      egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+      ante. Donec eu libero sit amet quam egestas semper. Our system achieves
+      state-of-the-art results on [benchmark], demonstrating the effectiveness of our
+      proposed approach for music modulation generation.
+    </p>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODULATION EXAMPLES  (content rendered by JS below)
+═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>Modulation Examples</h2>
+  <p style="margin-bottom:24px; color:#555; font-size:0.93rem;">
+    Each example below shows a generated music segment alongside a brief commentary
+    and the average listener ratings collected in our perceptual study.
+    Use the tabs to navigate between modulation types.
+  </p>
+
+  <div class="tab-bar"       id="tab-bar"></div>
+  <div id="panels-container"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer>
+  Anonymous submission. Do not distribute.
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     DATA + RENDERER
+     ─────────────────────────────────────────────────────────
+     To update content, edit only the MODULATIONS array below.
+     • label      : tab button text
+     • examples   : array of 5 objects, one per video
+         – title    : card header (e.g. "Example 1-A — C → G")
+         – video    : path to the .mp4 file
+         – comment  : commentary text shown below the video
+         – smoothness    : avg. Smoothness & Tonal Coherence score (1–5), or null
+         – authenticity  : avg. Authenticity to Prof. Composition score (1–5), or null
+═══════════════════════════════════════════════════════════ -->
+<script>
+const MODULATIONS = [
+  {
+    label: 'Modulation 1',
+    examples: [
+      {
+        title:        'Example 1-A — [short description]',
+        video:        'videos/mod1_a.mp4',
+        comment:      'Replace with your commentary for example 1-A.',
+        smoothness:   3,
+        authenticity: null,
+      },
+      {
+        title:        'Example 1-B — [short description]',
+        video:        'videos/mod1_b.mp4',
+        comment:      'Replace with your commentary for example 1-B.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 1-C — [short description]',
+        video:        'videos/mod1_c.mp4',
+        comment:      'Replace with your commentary for example 1-C.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 1-D — [short description]',
+        video:        'videos/mod1_d.mp4',
+        comment:      'Replace with your commentary for example 1-D.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 1-E — [short description]',
+        video:        'videos/mod1_e.mp4',
+        comment:      'Replace with your commentary for example 1-E.',
+        smoothness:   null,
+        authenticity: null,
+      },
+    ]
+  },
+  {
+    label: 'Modulation 2',
+    examples: [
+      {
+        title:        'Example 2-A — [short description]',
+        video:        'videos/mod2_a.mp4',
+        comment:      'Replace with your commentary for example 2-A.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 2-B — [short description]',
+        video:        'videos/mod2_b.mp4',
+        comment:      'Replace with your commentary for example 2-B.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 2-C — [short description]',
+        video:        'videos/mod2_c.mp4',
+        comment:      'Replace with your commentary for example 2-C.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 2-D — [short description]',
+        video:        'videos/mod2_d.mp4',
+        comment:      'Replace with your commentary for example 2-D.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 2-E — [short description]',
+        video:        'videos/mod2_e.mp4',
+        comment:      'Replace with your commentary for example 2-E.',
+        smoothness:   null,
+        authenticity: null,
+      },
+    ]
+  },
+  {
+    label: 'Modulation 3',
+    examples: [
+      {
+        title:        'Example 3-A — [short description]',
+        video:        'videos/mod3_a.mp4',
+        comment:      'Replace with your commentary for example 3-A.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 3-B — [short description]',
+        video:        'videos/mod3_b.mp4',
+        comment:      'Replace with your commentary for example 3-B.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 3-C — [short description]',
+        video:        'videos/mod3_c.mp4',
+        comment:      'Replace with your commentary for example 3-C.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 3-D — [short description]',
+        video:        'videos/mod3_d.mp4',
+        comment:      'Replace with your commentary for example 3-D.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 3-E — [short description]',
+        video:        'videos/mod3_e.mp4',
+        comment:      'Replace with your commentary for example 3-E.',
+        smoothness:   null,
+        authenticity: null,
+      },
+    ]
+  },
+  {
+    label: 'Modulation 4',
+    examples: [
+      {
+        title:        'Example 4-A — [short description]',
+        video:        'videos/mod4_a.mp4',
+        comment:      'Replace with your commentary for example 4-A.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 4-B — [short description]',
+        video:        'videos/mod4_b.mp4',
+        comment:      'Replace with your commentary for example 4-B.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 4-C — [short description]',
+        video:        'videos/mod4_c.mp4',
+        comment:      'Replace with your commentary for example 4-C.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 4-D — [short description]',
+        video:        'videos/mod4_d.mp4',
+        comment:      'Replace with your commentary for example 4-D.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 4-E — [short description]',
+        video:        'videos/mod4_e.mp4',
+        comment:      'Replace with your commentary for example 4-E.',
+        smoothness:   null,
+        authenticity: null,
+      },
+    ]
+  },
+  {
+    label: 'Modulation 5',
+    examples: [
+      {
+        title:        'Example 5-A — [short description]',
+        video:        'videos/mod5_a.mp4',
+        comment:      'Replace with your commentary for example 5-A.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 5-B — [short description]',
+        video:        'videos/mod5_b.mp4',
+        comment:      'Replace with your commentary for example 5-B.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 5-C — [short description]',
+        video:        'videos/mod5_c.mp4',
+        comment:      'Replace with your commentary for example 5-C.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 5-D — [short description]',
+        video:        'videos/mod5_d.mp4',
+        comment:      'Replace with your commentary for example 5-D.',
+        smoothness:   null,
+        authenticity: null,
+      },
+      {
+        title:        'Example 5-E — [short description]',
+        video:        'videos/mod5_e.mp4',
+        comment:      'Replace with your commentary for example 5-E.',
+        smoothness:   null,
+        authenticity: null,
+      },
+    ]
+  },
+];
+
+/* ── Tooltip text for each metric ───────────────────────── */
+const TIP_SMOOTHNESS =
+  'How smooth and tonally coherent did the transition between keys sound? ' +
+  'A smooth modulation flows naturally; tonal coherence means the harmonic ' +
+  'and melodic connection between keys is maintained. (1 = poor, 5 = excellent)';
+
+const TIP_AUTHENTICITY =
+  'How closely does the modulation resemble how a professional composer ' +
+  'would approach it in a composed piece? Considers artistic intent, ' +
+  'stylistic appropriateness, and pop compositional conventions. ' +
+  '(1 = poor, 5 = excellent)';
+
+/* ── Helpers ─────────────────────────────────────────────── */
+function scoreBar(label, tip, value) {
+  const pct   = value !== null ? ((value / 5) * 100).toFixed(0) + '%' : '0%';
+  const disp  = value !== null ? value.toFixed(1) : '—';
+  return `
+    <div class="score-item">
+      <div class="score-label">
+        ${label}
+        <span class="info-icon" data-tip="${tip}">i</span>
+      </div>
+      <div class="score-desc">avg. listener rating · scale 1–5</div>
+      <div class="score-row">
+        <div class="score-bar-wrap">
+          <div class="score-bar-fill" style="width:${pct}"></div>
+        </div>
+        <div class="score-value">${disp}</div>
+      </div>
+    </div>`;
+}
+
+function buildCard(ex) {
+  return `
+    <div class="demo-card">
+      <div class="demo-card-header">${ex.title}</div>
+      <div class="demo-card-body">
+        <video controls>
+          <source src="${ex.video}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="demo-comment">
+          <strong>Commentary:</strong> ${ex.comment}
+        </div>
+        <div class="scores-block">
+          ${scoreBar('Smoothness &amp; Tonal Coherence',       TIP_SMOOTHNESS,    ex.smoothness)}
+          ${scoreBar('Authenticity to Professional Composition', TIP_AUTHENTICITY, ex.authenticity)}
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ── Render ──────────────────────────────────────────────── */
+(function render() {
+  const tabBar  = document.getElementById('tab-bar');
+  const panels  = document.getElementById('panels-container');
+
+  MODULATIONS.forEach((mod, i) => {
+    const id      = 'mod' + (i + 1);
+    const isFirst = i === 0;
+
+    /* tab button */
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (isFirst ? ' active' : '');
+    btn.textContent = mod.label;
+    btn.onclick = function () { showTab(id, this); };
+    tabBar.appendChild(btn);
+
+    /* panel */
+    const panel = document.createElement('div');
+    panel.id        = id;
+    panel.className = 'demo-panel' + (isFirst ? ' active' : '');
+    panel.innerHTML = mod.examples.map(buildCard).join('');
+    panels.appendChild(panel);
+  });
+})();
+
+function showTab(id, btn) {
+  document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
