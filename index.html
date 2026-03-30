@@ -151,112 +151,6 @@
     }
     .demo-comment strong { color: #2c3e50; }
 
-    /* ── Scores block ────────────────────────────────────────── */
-    .scores-block {
-      display: flex;
-      gap: 24px;
-      margin-top: 20px;
-      padding-top: 18px;
-      border-top: 1px dashed #e0e0e0;
-      flex-wrap: wrap;
-    }
-    .score-item { flex: 1; min-width: 160px; }
-    .score-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #888;
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: default;
-    }
-    .score-desc {
-      font-size: 0.76rem;
-      color: #aaa;
-      font-weight: 400;
-      margin-bottom: 6px;
-      font-style: italic;
-    }
-    .score-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .score-bar-wrap {
-      flex: 1;
-      height: 7px;
-      background: #e8edf4;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .score-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #426AA0, #6b9fd4);
-      border-radius: 4px;
-      transition: width 0.6s ease;
-    }
-    .score-value {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: #2c3e50;
-      min-width: 34px;
-      text-align: right;
-    }
-
-    /* ── Info tooltip ────────────────────────────────────────── */
-    .info-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #c8d8ee;
-      color: #426AA0;
-      font-size: 0.65rem;
-      font-style: normal;
-      font-weight: 700;
-      letter-spacing: 0;
-      text-transform: none;
-      cursor: help;
-      position: relative;
-      flex-shrink: 0;
-    }
-    .info-icon::after {
-      content: attr(data-tip);
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: #2c3e50;
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 400;
-      line-height: 1.5;
-      padding: 10px 14px;
-      border-radius: 6px;
-      width: 260px;
-      white-space: normal;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.2s;
-      z-index: 10;
-      text-transform: none;
-      letter-spacing: 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .info-icon:hover::after { opacity: 1; }
-
-    /* Right-side tooltip: anchor to the right so it doesn't overflow the viewport */
-    .score-item:last-child .info-icon::after {
-      left: auto;
-      right: 0;
-      transform: none;
-    }
-
     /* ── Footer ──────────────────────────────────────────────── */
     footer {
       text-align: center;
@@ -345,13 +239,11 @@
      DATA + RENDERER
      ─────────────────────────────────────────────────────────
      To update content, edit only the MODULATIONS array below.
-     • label      : tab button text
-     • examples   : array of 5 objects, one per video
-         – title    : card header (e.g. "Example 1-A — C → G")
-         – video    : path to the .mp4 file
-         – comment  : commentary text shown below the video
-         – smoothness    : avg. Smoothness & Tonal Coherence score (1–5), or null
-         – authenticity  : avg. Authenticity to Prof. Composition score (1–5), or null
+     • label    : tab button text
+     • examples : array of 5 objects, one per video
+         – title   : card header (e.g. "Example 1-A — C → G")
+         – video   : path to the .mp4 file
+         – comment : commentary text shown below the video
 ═══════════════════════════════════════════════════════════ -->
 <script>
 const MODULATIONS = [
@@ -362,36 +254,26 @@ const MODULATIONS = [
         title:        'Example 1-A — [short description]',
         video:        'videos/mod1_a.mp4',
         comment:      'Replace with your commentary for example 1-A.',
-        smoothness:   3,
-        authenticity: null,
       },
       {
         title:        'Example 1-B — [short description]',
         video:        'videos/mod1_b.mp4',
         comment:      'Replace with your commentary for example 1-B.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 1-C — [short description]',
         video:        'videos/mod1_c.mp4',
         comment:      'Replace with your commentary for example 1-C.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 1-D — [short description]',
         video:        'videos/mod1_d.mp4',
         comment:      'Replace with your commentary for example 1-D.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 1-E — [short description]',
         video:        'videos/mod1_e.mp4',
         comment:      'Replace with your commentary for example 1-E.',
-        smoothness:   null,
-        authenticity: null,
       },
     ]
   },
@@ -402,36 +284,26 @@ const MODULATIONS = [
         title:        'Example 2-A — [short description]',
         video:        'videos/mod2_a.mp4',
         comment:      'Replace with your commentary for example 2-A.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 2-B — [short description]',
         video:        'videos/mod2_b.mp4',
         comment:      'Replace with your commentary for example 2-B.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 2-C — [short description]',
         video:        'videos/mod2_c.mp4',
         comment:      'Replace with your commentary for example 2-C.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 2-D — [short description]',
         video:        'videos/mod2_d.mp4',
         comment:      'Replace with your commentary for example 2-D.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 2-E — [short description]',
         video:        'videos/mod2_e.mp4',
         comment:      'Replace with your commentary for example 2-E.',
-        smoothness:   null,
-        authenticity: null,
       },
     ]
   },
@@ -442,36 +314,26 @@ const MODULATIONS = [
         title:        'Example 3-A — [short description]',
         video:        'videos/mod3_a.mp4',
         comment:      'Replace with your commentary for example 3-A.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 3-B — [short description]',
         video:        'videos/mod3_b.mp4',
         comment:      'Replace with your commentary for example 3-B.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 3-C — [short description]',
         video:        'videos/mod3_c.mp4',
         comment:      'Replace with your commentary for example 3-C.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 3-D — [short description]',
         video:        'videos/mod3_d.mp4',
         comment:      'Replace with your commentary for example 3-D.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 3-E — [short description]',
         video:        'videos/mod3_e.mp4',
         comment:      'Replace with your commentary for example 3-E.',
-        smoothness:   null,
-        authenticity: null,
       },
     ]
   },
@@ -482,36 +344,26 @@ const MODULATIONS = [
         title:        'Example 4-A — [short description]',
         video:        'videos/mod4_a.mp4',
         comment:      'Replace with your commentary for example 4-A.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 4-B — [short description]',
         video:        'videos/mod4_b.mp4',
         comment:      'Replace with your commentary for example 4-B.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 4-C — [short description]',
         video:        'videos/mod4_c.mp4',
         comment:      'Replace with your commentary for example 4-C.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 4-D — [short description]',
         video:        'videos/mod4_d.mp4',
         comment:      'Replace with your commentary for example 4-D.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 4-E — [short description]',
         video:        'videos/mod4_e.mp4',
         comment:      'Replace with your commentary for example 4-E.',
-        smoothness:   null,
-        authenticity: null,
       },
     ]
   },
@@ -522,72 +374,30 @@ const MODULATIONS = [
         title:        'Example 5-A — [short description]',
         video:        'videos/mod5_a.mp4',
         comment:      'Replace with your commentary for example 5-A.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 5-B — [short description]',
         video:        'videos/mod5_b.mp4',
         comment:      'Replace with your commentary for example 5-B.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 5-C — [short description]',
         video:        'videos/mod5_c.mp4',
         comment:      'Replace with your commentary for example 5-C.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 5-D — [short description]',
         video:        'videos/mod5_d.mp4',
         comment:      'Replace with your commentary for example 5-D.',
-        smoothness:   null,
-        authenticity: null,
       },
       {
         title:        'Example 5-E — [short description]',
         video:        'videos/mod5_e.mp4',
         comment:      'Replace with your commentary for example 5-E.',
-        smoothness:   null,
-        authenticity: null,
       },
     ]
   },
 ];
-
-/* ── Tooltip text for each metric ───────────────────────── */
-const TIP_SMOOTHNESS =
-  'How smooth and tonally coherent did the transition between keys sound? ' +
-  'A smooth modulation flows naturally; tonal coherence means the harmonic ' +
-  'and melodic connection between keys is maintained. (1 = poor, 5 = excellent)';
-
-const TIP_AUTHENTICITY =
-  'How closely does the modulation resemble how a professional composer ' +
-  'would approach it in a composed piece? Considers artistic intent, ' +
-  'stylistic appropriateness, and pop compositional conventions. ' +
-  '(1 = poor, 5 = excellent)';
-
-/* ── Helpers ─────────────────────────────────────────────── */
-function scoreBar(label, tip, value) {
-  const pct   = value !== null ? ((value / 5) * 100).toFixed(0) + '%' : '0%';
-  const disp  = value !== null ? value.toFixed(1) : '—';
-  return `
-    <div class="score-item">
-      <div class="score-label">
-        ${label}
-        <span class="info-icon" data-tip="${tip}">i</span>
-      </div>
-      <div class="score-desc">avg. listener rating · scale 1–5</div>
-      <div class="score-row">
-        <div class="score-bar-wrap">
-          <div class="score-bar-fill" style="width:${pct}"></div>
-        </div>
-        <div class="score-value">${disp}</div>
-      </div>
-    </div>`;
-}
 
 function buildCard(ex) {
   return `
@@ -600,10 +410,6 @@ function buildCard(ex) {
         </video>
         <div class="demo-comment">
           <strong>Commentary:</strong> ${ex.comment}
-        </div>
-        <div class="scores-block">
-          ${scoreBar('Smoothness &amp; Tonal Coherence',       TIP_SMOOTHNESS,    ex.smoothness)}
-          ${scoreBar('Authenticity to Professional Composition', TIP_AUTHENTICITY, ex.authenticity)}
         </div>
       </div>
     </div>`;
