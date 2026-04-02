@@ -190,7 +190,7 @@
   <h2>Abstract</h2>
   <div class="abstract-box">
     <p>
-      The ability to transition between two tonalities, or to modulate, is a vital compositional tool for shaping emotional contour and musical tension. However, controlling the generation of key changes in a meaningful and musically coherent manner is a significant challenge for AI-driven music systems, owing to the lack of large scale annotated modulation datasets. To overcome this data scarcity problem, we formulate musical modulation as a generative infilling task, that learns from vast amounts of unannotated data via self-supervised training. We evaluate this framework through a purpose-built LLaMA-based infilling model which supports both an autonomous generation mode and a rule-guided mode conditioned on harmonic progressions. To assess the modulatory mechanics without relying on ground-truth annotations, we design a multi-dimensional, reference-free evaluation suite quantifying stylistic coherence, rhythmic continuity, voice-leading smoothness, and harmonic tension. We validate these metrics through a subjective listening test to demonstrate a meaningful correlation with human aesthetic perception. Furthermore, zero-shot evaluations on both human-composed reconstructions and forced modulations across varying semitone shifts show that our autonomous model mitigates harmonic shock and maintains stylistic cohesion, even when navigating distant tonal intervals.
+      The ability to transition between two tonalities, or to modulate, is a vital compositional tool for shaping emotional contour and musical tension. However, controlling the generation of key changes in a meaningful and musically coherent manner is a significant challenge for AI-driven music systems, owing to the lack of large scale annotated modulation datasets. To overcome this data scarcity problem, we formulate musical modulation as a generative infilling task that enables models to learn from vast amounts of unannotated data via self-supervised training. We evaluate this framework through a purpose-built LLaMA-based infilling model which supports both an autonomous generation mode and a rule-guided model conditioned on harmonic progressions. To assess the modulatory mechanics without relying on ground-truth annotations, we design a multi-dimensional, reference-free evaluation suite quantifying stylistic coherence, rhythmic continuity, voice-leading smoothness, and harmonic tension. We validate these metrics through a subjective listening test to demonstrate a meaningful correlation with human aesthetic perception. Furthermore, zero-shot evaluations on both human-composed reconstructions and forced modulations across varying semitone shifts show that our autonomous model mitigates harmonic shock and maintains stylistic cohesion, even when navigating distant tonal intervals.
     </p>
   </div>
 </div>
@@ -201,20 +201,34 @@
 ═══════════════════════════════════════════════════════════ -->
 <div class="section">
   <h2>Reference Modulation</h2>
-  <p style="margin-bottom:20px; color:#555; font-size:0.93rem;">
-    Among all the generated outputs evaluated in our listening study, this example
-    stands out as the most representative demonstration of our framework's capabilities.
-    It is presented here as a reference point for the quality our system can achieve.
+  <p style="margin-bottom:24px; color:#555; font-size:0.93rem;">
+    The following two examples illustrate the same modulation — from A♭ minor to A minor —
+    as composed by a human and as generated autonomously by our model.
+    They serve as a representative showcase of what our framework can achieve.
   </p>
-  <div class="demo-card" style="max-width:680px; margin-left:auto; margin-right:auto;">
-    <div class="demo-card-header">Autonomous Model &mdash; C major &rarr; F♯ minor (Track 190)</div>
-    <div class="demo-card-body">
-      <video controls>
-        <source src="Modulator/8/normal/190_reconstructed.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <div class="demo-comment">
-        <strong>Commentary:</strong> The piece modulates from C major to F♯ minor; the transition occurs from 00:20 to 00:30. This example is particularly noteworthy because the model not only generates harmonically coherent and well-resolved voice leading, but also introduces rhythmic novelty within the transition window — making the modulation one of the most musically interesting outputs produced by our framework.
+  <div style="display:flex; gap:24px; flex-wrap:wrap; justify-content:center;">
+    <div class="demo-card" style="flex:1; min-width:280px; max-width:480px;">
+      <div class="demo-card-header">Human-Composed (Ground Truth) &mdash; A♭ minor &rarr; A minor</div>
+      <div class="demo-card-body">
+        <video controls>
+          <source src="Modulator/Best/646_human.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="demo-comment">
+          <strong>Commentary:</strong> The piece modulates from A♭ minor to A minor. The original human-composed bridge from the POP909 dataset.
+        </div>
+      </div>
+    </div>
+    <div class="demo-card" style="flex:1; min-width:280px; max-width:480px;">
+      <div class="demo-card-header">Autonomous Model &mdash; A♭ minor &rarr; A minor</div>
+      <div class="demo-card-body">
+        <video controls>
+          <source src="Modulator/Best/646_normal.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="demo-comment">
+          <strong>Commentary:</strong> The piece modulates from A♭ minor to A minor. This example is particularly noteworthy because the model not only generates harmonically coherent and well-resolved voice leading, but also introduces rhythmic novelty within the transition window — making the modulation one of the most musically interesting outputs produced by our framework.
+        </div>
       </div>
     </div>
   </div>
@@ -226,9 +240,12 @@
 ═══════════════════════════════════════════════════════════ -->
 <div class="section">
   <h2>Modulation Examples</h2>
-  <p style="margin-bottom:24px; color:#555; font-size:0.93rem;">
+  <p style="margin-bottom:16px; color:#555; font-size:0.93rem;">
     Each example shows five versions of the same modulation window: the human-composed
     reference (Ground Truth) and four generated variants. Use the tabs to navigate between examples.
+  </p>
+  <p style="margin-bottom:24px; padding:10px 16px; background:#f0f4fa; border-left:3px solid #426AA0; border-radius:4px; color:#444; font-size:0.9rem;">
+    <strong>Note:</strong> In all clips, the modulation transition window spans from <strong>00:20 to 00:30</strong>.
   </p>
 
   <div class="tab-bar"       id="tab-bar"></div>
@@ -267,22 +284,22 @@ const MODULATIONS = [
       {
         title:   'Example 1-B — Autonomous Model',
         video:   'Modulator/8/normal/190_reconstructed.mp4',
-        comment: 'The piece modulates from C major to F♯ minor; the transition occurs from 00:20 to 00:30. The model generates a coherent bridge without chord conditioning, producing a melodic arc that navigates the dramatic tonal distance with reasonable fluency.',
+        comment: 'The piece modulates from C major to F♯ minor. The model generates a coherent bridge without chord conditioning, producing a melodic arc that navigates the dramatic tonal distance with reasonable fluency.',
       },
       {
         title:   'Example 1-C — Rule-Guided Model',
         video:   'Modulator/8/chords/190_chords.mp4',
-        comment: 'The piece modulates from C major to F♯ minor; the transition occurs from 00:20 to 00:30. The rule-based harmonic back-cycling from the dominant of F♯ minor yields a clean, well-resolved bridge, though the approach results in a somewhat predictable harmonic contour.',
+        comment: 'The piece modulates from C major to F♯ minor. The rule-based harmonic back-cycling from the dominant of F♯ minor yields a clean, well-resolved bridge, though the approach results in a somewhat predictable harmonic contour.',
       },
       {
         title:   'Example 1-D — LLM-Guided Model',
         video:   'Modulator/8/llm_chords/190_llm_chords.mp4',
-        comment: 'The piece modulates from C major to F♯ minor; the transition occurs from 00:20 to 00:30. The LLM-generated chord progression handles the challenging tonal distance with stylistic plausibility, producing a smooth and convincing transition that closely approaches the quality of the rule-guided variant.',
+        comment: 'The piece modulates from C major to F♯ minor. The LLM-generated chord progression handles the challenging tonal distance with stylistic plausibility, producing a smooth and convincing transition that closely approaches the quality of the rule-guided variant.',
       },
       {
         title:   'Example 1-E — Anticipatory Music Transformer (AMT)',
         video:   'Modulator/8/amt/190_amt.mp4',
-        comment: 'The piece modulates from C major to F♯ minor; the transition occurs from 00:20 to 00:30. The AMT baseline struggles with the large tonal distance, producing a melodically disjointed bridge that reflects the limitations of its anticipatory context window for long-range tonal resolution.',
+        comment: 'The piece modulates from C major to F♯ minor. The AMT baseline struggles with the large tonal distance, producing a melodically disjointed bridge that reflects the limitations of its anticipatory context window for long-range tonal resolution.',
       },
     ]
   },
@@ -297,22 +314,22 @@ const MODULATIONS = [
       {
         title:   'Example 2-B — Autonomous Model',
         video:   'Modulator/2/normal/181_normal.mp4',
-        comment: 'The piece modulates from F major to F♯ major; the transition occurs from 00:20 to 00:30. The model achieves a smooth, well-integrated bridge with clear tonal continuity, successfully navigating the semitone key shift without chord conditioning.',
+        comment: 'The piece modulates from F major to F♯ major. The model achieves a smooth, well-integrated bridge with clear tonal continuity, successfully navigating the semitone key shift without chord conditioning.',
       },
       {
         title:   'Example 2-C — Rule-Guided Model',
         video:   'Modulator/2/chords/181_chords.mp4',
-        comment: 'The piece modulates from F major to F♯ major; the transition occurs from 00:20 to 00:30. The rule-based harmonic back-cycling produces a particularly fluid and professionally crafted modulation — the highest-rated generated output across the entire evaluation.',
+        comment: 'The piece modulates from F major to F♯ major. The rule-based harmonic back-cycling produces a particularly fluid and professionally crafted modulation — the highest-rated generated output across the entire evaluation.',
       },
       {
         title:   'Example 2-D — LLM-Guided Model',
         video:   'Modulator/2/llm_chords/181_llm_chords.mp4',
-        comment: 'The piece modulates from F major to F♯ major; the transition occurs from 00:20 to 00:30. The LLM-generated chord progression delivers smooth harmonic control, but with some insecurities.',
+        comment: 'The piece modulates from F major to F♯ major. The LLM-generated chord progression delivers smooth harmonic control, but with some insecurities.',
       },
       {
         title:   'Example 2-E — Anticipatory Music Transformer (AMT)',
         video:   'Modulator/2/amt/181_amt.mp4',
-        comment: 'The piece modulates from F major to F♯ major; the transition occurs from 00:20 to 00:30. The AMT baseline introduces significant rhythmic and melodic discontinuities across the semitone boundary.',
+        comment: 'The piece modulates from F major to F♯ major. The AMT baseline introduces significant rhythmic and melodic discontinuities across the semitone boundary.',
       },
     ]
   },
@@ -327,22 +344,22 @@ const MODULATIONS = [
       {
         title:   'Example 3-B — Autonomous Model',
         video:   'Modulator/7/normal/186_reconstructed.mp4',
-        comment: 'The piece modulates from G major to A♭ major; the transition occurs from 00:20 to 00:30. The model produces a generally smooth bridge but introduces a chord outside the expected tonality mid-transition, creating a brief moment of tonal ambiguity.',
+        comment: 'The piece modulates from G major to A♭ major. The model produces a generally smooth bridge but introduces a chord outside the expected tonality mid-transition, creating a brief moment of tonal ambiguity.',
       },
       {
         title:   'Example 3-C — Rule-Guided Model',
         video:   'Modulator/7/chords/186_chords.mp4',
-        comment: 'The piece modulates from G major to A♭ major; the transition occurs from 00:20 to 00:30. The rule-guided bridge features a well-placed pivot chord, confirming that back-cycling from the dominant of A♭ provides reliable harmonic logic for this semitone shift.',
+        comment: 'The piece modulates from G major to A♭ major. The rule-guided bridge features a well-placed pivot chord, confirming that back-cycling from the dominant of A♭ provides reliable harmonic logic for this semitone shift.',
       },
       {
         title:   'Example 3-D — LLM-Guided Model',
         video:   'Modulator/7/llm_chords/186_llm_chords.mp4',
-        comment: 'The piece modulates from G major to A♭ major; the transition occurs from 00:20 to 00:30. A notable failure case: the LLM-generated progression introduces unidiomatic voice leading, producing a jarring transition that illustrates the risk of unconstrained harmonic suggestions.',
+        comment: 'The piece modulates from G major to A♭ major. A notable failure case: the LLM-generated progression introduces unidiomatic voice leading, producing a jarring transition that illustrates the risk of unconstrained harmonic suggestions.',
       },
       {
         title:   'Example 3-E — Anticipatory Music Transformer (AMT)',
         video:   'Modulator/7/amt/186_amt.mp4',
-        comment: 'The piece modulates from G major to A♭ major; the transition occurs from 00:20 to 00:30. The AMT baseline generates a melodically repetitive bridge that undermines the overall musicality of the transition across the semitone boundary.',
+        comment: 'The piece modulates from G major to A♭ major. The AMT baseline generates a melodically repetitive bridge that undermines the overall musicality of the transition across the semitone boundary.',
       },
     ]
   },
@@ -357,22 +374,22 @@ const MODULATIONS = [
       {
         title:   'Example 4-B — Autonomous Model',
         video:   'Modulator/5/normal/654_reconstructed.mp4',
-        comment: 'The piece modulates from B minor to C minor; the transition occurs from 00:20 to 00:30. The model generates a well-prepared and less abrupt bridge with voice leading that navigates the semitone key shift convincingly.',
+        comment: 'The piece modulates from B minor to C minor. The model generates a well-prepared and less abrupt bridge with voice leading that navigates the semitone key shift convincingly.',
       },
       {
         title:   'Example 4-C — Rule-Guided Model',
         video:   'Modulator/5/chords/654_chords.mp4',
-        comment: 'The piece modulates from B minor to C minor; the transition occurs from 00:20 to 00:30. The rule-guided bridge is functionally well-constructed, though the tight tonal distance introduces some ambiguity in the harmonic resolution despite the back-cycling approach.',
+        comment: 'The piece modulates from B minor to C minor. The rule-guided bridge is functionally well-constructed, though the tight tonal distance introduces some ambiguity in the harmonic resolution despite the back-cycling approach.',
       },
       {
         title:   'Example 4-D — LLM-Guided Model',
         video:   'Modulator/5/llm_chords/654_llm_chords.mp4',
-        comment: 'The piece modulates from B minor to C minor; the transition occurs from 00:20 to 00:30. The multi-chord LLM-generated progression provides a more gradual harmonic journey than a single pivot chord, resulting in a perceptibly smoother transition across the tonal boundary.',
+        comment: 'The piece modulates from B minor to C minor. The multi-chord LLM-generated progression provides a more gradual harmonic journey than a single pivot chord, resulting in a perceptibly smoother transition across the tonal boundary.',
       },
       {
         title:   'Example 4-E — Anticipatory Music Transformer (AMT)',
         video:   'Modulator/5/amt/654_amt.mp4',
-        comment: 'The piece modulates from B minor to C minor; the transition occurs from 00:20 to 00:30. The AMT baseline yields mixed results, with some structural continuity present but limited voice-leading smoothness across the semitone boundary.',
+        comment: 'The piece modulates from B minor to C minor. The AMT baseline yields mixed results, with some structural continuity present but limited voice-leading smoothness across the semitone boundary.',
       },
     ]
   },
@@ -387,22 +404,22 @@ const MODULATIONS = [
       {
         title:   'Example 5-B — Autonomous Model',
         video:   'Modulator/9/normal/202_reconstructed.mp4',
-        comment: 'The piece modulates from D♭ major to D major; the transition occurs from 00:20 to 00:30. The model generates a functional bridge that closely follows the stylistic context, producing a straightforward transition without major discontinuities.',
+        comment: 'The piece modulates from D♭ major to D major. The model generates a functional bridge that closely follows the stylistic context, producing a straightforward transition without major discontinuities.',
       },
       {
         title:   'Example 5-C — Rule-Guided Model',
         video:   'Modulator/9/chords/202_chords.mp4',
-        comment: 'The piece modulates from D♭ major to D major; the transition occurs from 00:20 to 00:30. The rule-guided bridge provides a well structured harmonic path through the semitone shift.',
+        comment: 'The piece modulates from D♭ major to D major. The rule-guided bridge provides a well structured harmonic path through the semitone shift.',
       },
       {
         title:   'Example 5-D — LLM-Guided Model',
         video:   'Modulator/9/llm_chords/202_llm_chords.mp4',
-        comment: 'The piece modulates from D♭ major to D major; the transition occurs from 00:20 to 00:30. The LLM-generated progression adapts to the local harmonic context, offering a richer multi-chord trajectory that produces a very convincing modulation.',
+        comment: 'The piece modulates from D♭ major to D major. The LLM-generated progression adapts to the local harmonic context, offering a richer multi-chord trajectory that produces a very convincing modulation.',
       },
       {
         title:   'Example 5-E — Anticipatory Music Transformer (AMT)',
         video:   'Modulator/9/amt/202_amt.mp4',
-        comment: 'The piece modulates from D♭ major to D major; the transition occurs from 00:20 to 00:30. The AMT baseline achieves reasonable stylistic continuity on this example, suggesting the semitone key shift aligns relatively well with the model\'s anticipatory generation strategy.',
+        comment: 'The piece modulates from D♭ major to D major. The AMT baseline achieves reasonable stylistic continuity on this example, suggesting the semitone key shift aligns relatively well with the model\'s anticipatory generation strategy.',
       },
     ]
   },
